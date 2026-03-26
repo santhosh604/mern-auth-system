@@ -41,10 +41,8 @@ export const register = async (req, res) => {
             text: `Hello ${name}! you have logged successfully!`
         };
 
-        transporter.sendMail(mailOptions).catch(err => {
-            console.log("Mail error:", err);
-        });
-
+        await transporter.sendMail(mailOptions);
+        
     } catch (error) {
         console.log("step 3")
         return res.json({success: false, message: error.message});
@@ -130,11 +128,7 @@ export const sendOtp = async (req, res) => {
             text: `your OTP is ${otp}`
         };
 
-        transporter.sendMail(mailOptions).catch(err => {
-            console.log("Mail error:", err);
-        });
-
-
+        await transporter.sendMail(mailOptions);
     }
     catch (error) {
         res.json({success: false, message: error.message});
