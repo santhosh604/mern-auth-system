@@ -9,7 +9,7 @@ export default function Login() {
     email: "",
     password: ""
   });
-
+  console.log(API.defaults.baseURL);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");

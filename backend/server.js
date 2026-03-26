@@ -15,6 +15,10 @@ connectDB();
 //API endpoints
 app.use("/auth", authRouter);
 
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
 app.listen(process.env.PORT || 5000, () => {
     console.log(`Server running perfect`)
 });
