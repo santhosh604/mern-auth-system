@@ -49,6 +49,7 @@ export default function VerifyOTP() {
       if (res.data.success === false) {
           return setError(res.data.message)
       }
+      console.log(res.data.message)
       navigate("/reset-password");
 
     } catch (err) {

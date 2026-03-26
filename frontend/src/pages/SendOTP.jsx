@@ -24,7 +24,7 @@ export default function SendOTP() {
       if (res.data.success === false) {
         return setMsg(res.data.message), setError("");
       }
-      
+      console.log(res.data.message);
       localStorage.setItem("email", email);
 
       navigate("/verify-otp");
