@@ -13,7 +13,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
-  console.log(import.meta.env.VITE_API_URL);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -38,7 +37,6 @@ export default function Login() {
       navigate("/dashboard"); // or dashboard later
 
     } catch (err) {
-      console.log(err.response?.data);
       setMsg(err.response?.data?.message), setError("")
     } finally {
       setLoading(false);

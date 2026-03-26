@@ -18,12 +18,9 @@ export default function SendOTP() {
     }
 
     try {
-      setLoading(true);
-      setError("");
-      setMsg("");
+      setLoading(true), setError(""), setMsg("");
       const res = await API.post("/auth/send-otp", { email });
 
-      console.log(res.data);
       if (res.data.success === false) {
         return setMsg(res.data.message), setError("");
       }
@@ -33,7 +30,6 @@ export default function SendOTP() {
       navigate("/verify-otp");
 
     } catch (err) {
-      console.log(err.response?.data);
       setMsg(err.response?.data?.message), setError("")
     } finally {
       setLoading(false);
