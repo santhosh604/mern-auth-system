@@ -6,12 +6,14 @@ import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
     const {name, email, password} = req.body;
+    console.log("step 1")
 
     if (!name || !email || !password) {
-        res.json({success: false, message: "credentials are required"})
+        return res.json({success: false, message: "credentials are required"})
     }
     
     try {
+        console.log("step 2")
         const existUser = await userModel.findOne({email});
 
         if (existUser) {
@@ -30,6 +32,7 @@ export const register = async (req, res) => {
             sameSite: "none",
             maxAge: 1000 * 60 * 60 * 24 * 7
         });
+        res.json({success: true, message: "Registered Successful!"});
 
         const mailOptions = {
             from: process.env.MAIL_SENDER,
@@ -38,12 +41,13 @@ export const register = async (req, res) => {
             text: `Hello ${name}! you have logged successfully!`
         };
 
-        await transporter.sendMail(mailOptions);
-
-        res.json({success: true, message: "Registered Successful!"});
+        transporter.sendMail(mailOptions).catch(err => {
+            console.log("Mail error:", err);
+        });
 
     } catch (error) {
-        res.json({success: false, message: error.message});
+        console.log("step 3")
+        return res.json({success: false, message: error.message});
     }
 
 }
@@ -104,6 +108,7 @@ export const logout = async (req, res) => {
 
 export const sendOtp = async (req, res) => {
     const {email} = req.body;
+    console.log("OTP hit");
     if (!email) {
         return res.json({success: false, message: "Email is required!"});
     }
@@ -115,7 +120,9 @@ export const sendOtp = async (req, res) => {
         }
 
         const otp = crypto.randomInt(100000, 900000);
-        
+        user.resetOtp = otp;
+        await user.save();
+        res.json({success: true, message: `Successfully sent OTP to your Email ${otp}`});
         const mailOptions = {
             from: process.env.MAIL_SENDER,
             to: email,
@@ -123,10 +130,9 @@ export const sendOtp = async (req, res) => {
             text: `your OTP is ${otp}`
         };
 
-        await transporter.sendMail(mailOptions);
-        user.resetOtp = otp;
-        await user.save();
-        res.json({success: true, message: `Successfully sent OTP to your Email ${otp}`});
+        transporter.sendMail(mailOptions).catch(err => {
+            console.log("Mail error:", err);
+        });
 
 
     }
@@ -166,7 +172,7 @@ export const newPassword = async (req, res) => {
         res.json({success: true, message: "Password reset successfull!"})
     }
     catch (error) {
-        res.json({success: false, message: error.message});
+       return res.json({success: false, message: error.message});
     }
 }
 
