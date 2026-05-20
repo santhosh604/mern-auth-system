@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import transporter from "../config/nodemailer.js";
+import axios from "axios";
 
 export const register = async (req, res) => {
     const {name, email, password} = req.body;
@@ -31,15 +31,6 @@ export const register = async (req, res) => {
             maxAge: 1000 * 60 * 60 * 24 * 7
         });
         res.json({success: true, message: "Registered Successful!"});
-
-        const mailOptions = {
-            from: process.env.MAIL_SENDER,
-            to: email,
-            subject: "Successfully Logged!",
-            text: `Hello ${name}! you have logged successfully!`
-        };
-
-        await transporter.sendMail(mailOptions);
         
     } catch (error) {
         console.log("step 3")
@@ -119,21 +110,27 @@ export const sendOtp = async (req, res) => {
         user.resetOtp = otp;
         await user.save();
         res.json({success: true, message: `Successfully sent OTP to your Email ${otp}`});
-        try {
-            const mailOptions = {
-                from: process.env.MAIL_SENDER,
-                to: email,
-                subject: "Your reset-OTP",
-                text: `your OTP is ${otp}`
-            };
+        await axios.post("https://api.brevo.com/v3/smtp/email",
+            {
+              sender: {
+                name: "mern auth",
+                email: process.env.MAIL_SENDER
+              },
 
-            await transporter.sendMail(mailOptions);
-            console.log("done")
-            
-        }
-        catch (error) {            
-            console.log("OTP mail error", error.message);
-        }
+              to: [{email: email}],
+  
+              subject: "Your Reset Password OTP",
+
+              htmlContent: `<h2>Your OTP is ${otp}</h2>`
+            },
+
+            {
+              headers: {
+              "api-key": process.env.BREVO_API_KEY,
+              "Content-Type": "application/json"
+              }
+            }
+        );
     }
     catch (error) {
         res.json({success: false, message: error.message});
