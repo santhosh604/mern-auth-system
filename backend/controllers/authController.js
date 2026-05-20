@@ -109,6 +109,7 @@ export const sendOtp = async (req, res) => {
         const otp = crypto.randomInt(100000, 900000);
         user.resetOtp = otp;
         await user.save();
+        console.log(process.env.BREVO_API_KEY);
         await axios.post("https://api.brevo.com/v3/smtp/email",
             {
               sender: {
