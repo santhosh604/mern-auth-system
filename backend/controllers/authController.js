@@ -128,6 +128,7 @@ export const sendOtp = async (req, res) => {
             };
 
             await transporter.sendMail(mailOptions);
+            console.log("done")
             
         }
         catch (error) {            
