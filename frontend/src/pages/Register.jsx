@@ -101,7 +101,7 @@ export default function Register() {
 
         <p className="text-sm mt-4 text-center">
           Already have an account? {""}
-          <Link to="/login" className="text-blue-500">
+          <Link to="/" className="text-blue-500">
             Login
           </Link>
         </p>

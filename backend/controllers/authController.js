@@ -144,17 +144,17 @@ export const sendOtp = async (req, res) => {
 export const verifyOtp = async (req, res) => {
     const {email, otp} = req.body;
     if (!email || !otp) {
-        res.json({success: false, message: "invalid values"});
+        return res.json({success: false, message: "invalid values"});
     }
     try {
         const user = await userModel.findOne({email});
         if (otp === user.resetOtp) {
             return res.json({success: true, message: "OTP is matched!"})
         }
-        res.json({success: false, message: "Incorrect OTP!"})
+        return res.json({success: false, message: "Incorrect OTP!"})
     }
     catch (error) {
-        res.json({success: false, message: error.message});
+        return res.json({success: false, message: error.message});
     }
 }
 
@@ -169,7 +169,7 @@ export const newPassword = async (req, res) => {
         user.password = hash;
         user.resetOtp = "";
         await user.save();
-        res.json({success: true, message: "Password reset successfull!"})
+        return res.json({success: true, message: "Password reset successfull!"})
     }
     catch (error) {
        return res.json({success: false, message: error.message});
