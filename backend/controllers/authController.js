@@ -119,14 +119,19 @@ export const sendOtp = async (req, res) => {
         user.resetOtp = otp;
         await user.save();
         res.json({success: true, message: `Successfully sent OTP to your Email ${otp}`});
-        const mailOptions = {
-            from: process.env.MAIL_SENDER,
-            to: email,
-            subject: "Your reset-OTP",
-            text: `your OTP is ${otp}`
-        };
+        try {
+            const mailOptions = {
+                from: process.env.MAIL_SENDER,
+                to: email,
+                subject: "Your reset-OTP",
+                text: `your OTP is ${otp}`
+            };
 
-        await transporter.sendMail(mailOptions);
+            await transporter.sendMail(mailOptions);
+        }
+        catch (error) {            
+            console.log("OTP mail error", error.message);
+        }
     }
     catch (error) {
         res.json({success: false, message: error.message});
