@@ -11,6 +11,6 @@ authRouter.post("/logout", logout);
 authRouter.post("/send-otp", otpLimiter, sendOtp);
 authRouter.post("/verify-otp", verifyOtp);
 authRouter.post("/reset-password", newPassword);
-authRouter.get("/", protect, profile);
+authRouter.get("/profile", protect, profile);
 
 export default authRouter;

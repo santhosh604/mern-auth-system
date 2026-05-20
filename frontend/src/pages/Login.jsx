@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import API from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    API.get("/auth/profile")
+      .then((res) => {
+        if (res.data.success === true) {
+          return navigate("/dashboard");
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
-  console.log(API.defaults.baseURL);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -34,7 +45,7 @@ export default function Login() {
     
       }
 
-      navigate("/"); 
+      navigate("/dashboard"); 
 
     } catch (err) {
       setMsg(err.response?.data?.message), setError("")
@@ -42,6 +53,8 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

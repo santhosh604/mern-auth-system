@@ -13,10 +13,10 @@ export default function Dashboard() {
     API.get("/auth/profile")
       .then((res) => {
         console.log(res.data);
-        if (res.data.success) {
-          setUser(res.data.user);
+        if (res.data.success === false) {
+           return navigate("/");
         }
-        navigate("/login");
+        setUser(res.data.user);
       
       })
       .catch((err) => {

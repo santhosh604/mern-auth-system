@@ -47,7 +47,7 @@ export default function Register() {
         return setMsg("This Email address already existed"), setError("")
       }
 
-      navigate("/"); 
+      navigate("/dashboard"); 
 
     } catch (err) {
         alert(err.response?.data?.message || "Something went wrong");
