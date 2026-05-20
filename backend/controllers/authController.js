@@ -128,6 +128,7 @@ export const sendOtp = async (req, res) => {
             };
 
             await transporter.sendMail(mailOptions);
+            
         }
         catch (error) {            
             console.log("OTP mail error", error.message);
