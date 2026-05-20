@@ -109,8 +109,8 @@ export const sendOtp = async (req, res) => {
         const otp = crypto.randomInt(100000, 900000);
         user.resetOtp = otp;
         await user.save();
-        console.log(process.env.BREVO_API_KEY);
-        await axios.post("https://api.brevo.com/v3/smtp/email",
+        try {
+          await axios.post("https://api.brevo.com/v3/smtp/email",
             {
               sender: {
                 name: "mern auth",
@@ -132,6 +132,9 @@ export const sendOtp = async (req, res) => {
             }
         );
         return res.json({success: true, message: `Successfully sent OTP to your Email ${otp}`});
+       } catch (error) {
+        console.log(error.response.data);
+       }
     }
     catch (error) {
         res.json({success: false, message: error.message});
