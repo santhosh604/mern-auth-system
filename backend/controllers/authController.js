@@ -6,14 +6,12 @@ import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
     const {name, email, password} = req.body;
-    console.log("step 1")
 
     if (!name || !email || !password) {
         return res.json({success: false, message: "credentials are required"})
     }
     
     try {
-        console.log("step 2")
         const existUser = await userModel.findOne({email});
 
         if (existUser) {
@@ -172,7 +170,7 @@ export const newPassword = async (req, res) => {
 
 export const profile = async (req, res) => {
   try {
-    if (!req.user) {console
+    if (!req.user) {
       return res.status(401).json({
         success: false,
         message: "Unauthorized"
