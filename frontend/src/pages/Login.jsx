@@ -34,7 +34,7 @@ export default function Login() {
     
       }
 
-      navigate("/dashboard"); // or dashboard later
+      navigate("/"); 
 
     } catch (err) {
       setMsg(err.response?.data?.message), setError("")
