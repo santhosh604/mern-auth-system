@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import Navbar from "../components/Navbar";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +16,7 @@ export default function Dashboard() {
         if (res.data.success) {
           setUser(res.data.user);
         }
-        Navigate("/login");
+        navigate("/login");
       
       })
       .catch((err) => {
