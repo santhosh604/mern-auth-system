@@ -7,7 +7,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await API.post("/auth/logout");
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.log(err);
     }

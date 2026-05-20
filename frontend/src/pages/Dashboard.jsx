@@ -10,6 +10,7 @@ export default function Dashboard() {
   useEffect(() => {
     API.get("/auth/profile")
       .then((res) => {
+        console.log(res.data);
         setUser(res.data.user);
       })
       .catch((err) => {
